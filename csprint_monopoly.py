@@ -3,36 +3,27 @@
 ## CSprint: Monome and polynome implementation 
 ## 
 ######################################################################
+from csprint_utils import *
+from csprint_midx_lb import Midx
+
 class Monome:
+    """Monome is represented by a coefficient and a multiindex.
+
     """
-    Monome is represented by a coefficient and a multiindex.
-    Multiindex is represented by a list.
-    """
-    def __init__ (self, coeff=1, midxs=[]):
+    def __init__ (self, coeff=1, midx=Midx()):
         self.coeff = coeff
-        self.midxs = midxs
-
+        self.midx = midx
     def evaluate (self, vals):
-        prod = 1
-        for i in range(len(vals)):
-            prod *= vals[i] ** self.midxs[i]
-        return prod
-
+        return self.coeff * self.midx.evaluate(vals)
     def tostr (self):
-        s = str(self.coeff)
-        for i in range(len(self.midxs)):
-            if (self.midxs[i] != 0):
-                s += ' ' + varnames[i]
-                if (self.midxs[i] != 1):
-                    s += '^' + str(self.midxs[i])
-        return s
+        return '%i %s' % (self.coeff, self.midx.tostr())
 
 class Polynome:
+    """Polynome is defined as a list of monomes.
+
     """
-    Polynome is defined as a list of monomes.
-    """
-    def __init__ (self):
-        self.mons = []
+    def __init__ (self, data=[]):
+        self.mons = [Monome(nm[0], Midx(nm[1])) for nm in data]
     def evaluate (self, vals):
         t = 0
         for i in range(len(self.mons)):
@@ -44,20 +35,9 @@ class Polynome:
             if (s != ""):
                 s += " + "
             s += self.mons[i].tostr()
-    return s
-
-def makePolynome (data):
-    """
-    Create a polynome from a simple list of (coeff, multiindex) paris.
-    """
-    p = Polynome()
-    for nm in data:
-        m = Monome(nm[0], nm[1])
-        p.mons.append(m)
-    return p
-
-def polyToMonomes (poly):
-    return [elem for elem in poly.mons]
+        return s
+    def toMonomes (poly):
+        return [elem for elem in poly.mons]
 
 if __name__=='__main__':
     raw = [
@@ -68,11 +48,11 @@ if __name__=='__main__':
         [1,[0,3]],
         [21,[1,1]]]
     vals = [3,5]
-    poly = makePolynome(raw)
-    monomes = polyToMonomes(poly)
-    polystr = poly.tostr()
-    polystr_check = ""
-    print(polystr)
-    polyeval = poly.evaluate(vals)
-    polyeval_check = 0
-    print(polyeval)
+    poly = Polynome(raw)
+    monomes = poly.toMonomes()
+    tests = [
+        [poly.tostr() ==
+         "3 <0>^2 + 2 <0>^4 <1> + 5 <1>^2 + 17 <1>^7 + 1 <1>^3 + 21 <0> <1>",
+         "Polynome.tostr"],
+        [poly.evaluate(vals) == 1329527, "Polynome.evaluate"]]
+    doTests(tests)
