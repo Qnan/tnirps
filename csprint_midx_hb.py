@@ -53,8 +53,6 @@ def makePolynome (data):
         m.monome.degs = nm[1]        
         p.nmonomes.append(m)
     return p
-
-def compareLex
         
 degs = [[1,{'x':2}],[1,{'x':1,'y':1}],[1,{'y':2}]]
 vals = {'x':3,'y':5}
