@@ -3,7 +3,15 @@
 ## CSprint: Simple recursive split procedure for tree building
 ## 
 ######################################################################
-import csprint_util
+from csprint_utils import *
+from csprint_midx_lb import *
+from csprint_monopoly import *
+
+def subList (mons, m):
+    for monome in mons:
+        monome.midx = midxSub(monome.midx, m)
+    return mons
+    
 
 def split (mons):
     """Find the maximum prefix of the sequence having nontrivial common divisor
@@ -11,13 +19,13 @@ def split (mons):
         and the second part as is.
         
     """
-    mcm=mons[0]
+    mcm=mons[0].midx
     for i in range(len(mons)):
-        m = midxMin(mcm, mons[i])
+        m = midxMin(mcm, mons[i].midx)
         if midxIsZero(m):
-            return mcm, [midxSub(el, mcm) for el in mons[:i]], mons[i:]
+            return mcm, subList(mons[:i], mcm), mons[i:]
         mcm = m
-    return mcm, [midxSub(el, mcm) for el in mons], []
+    return mcm, subList(mons[:i], mcm), []
 
 def monomesToTree (monomes):
     """Create a tree by recursively splitting the list of monomes.
@@ -43,3 +51,11 @@ def printTree (tree, offset = 0):
     print('  ' * offset + str(tree.data))
     [printTree(child, offset + 1) for child in tree.children]
 
+if __name__=='__main__':
+    lst = [[1, [2,3]], [2, [2,1]], [3, [1,0]], [5, [0,3]], [7, [0,2]]]
+    mons = [Monome(el[0], Midx(el[1])) for el in lst]
+    r = split(mons)
+    tests = [
+        [split(mons), "TreeNode init"]
+        ]
+    doTests(tests)
