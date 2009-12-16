@@ -3,7 +3,8 @@
 ## CSprint: List-based multiindex implementation
 ## 
 ######################################################################
-from csprint_utils import *
+import csprint_utils
+utils = csprint_utils
 
 class Midx:
     """ Multiindex is represented by a list of integers.
@@ -31,8 +32,8 @@ def midxMin (a, b):
     if not hasattr(a,'terms') and hasattr(b,'terms'):
         raise TypeError("Arguments should be of type Midx!")
     if len(a.terms) != len(b.terms):
-        raise ValueError("Multiindexes should have the same length!")
-    return Midx([min2(a.terms[i],b.terms[i]) for i in range(len(a.terms))])
+        raise ValueError("Multiindices should have the same length!")
+    return Midx([utils.min2(a.terms[i],b.terms[i]) for i in range(len(a.terms))])
 
 def midxIsZero (m):
     if not hasattr(m,'terms'):
@@ -46,7 +47,7 @@ def midxSub (m, d):
     if not hasattr(m,'terms') and hasattr(d,'terms'):
         raise TypeError("Arguments should be of type Midx!")
     if len(m.terms) != len(d.terms):
-        raise ValueError("Multiindexes should have the same length!")
+        raise ValueError("Multiindices should have the same length!")
     return Midx([m.terms[i] - d.terms[i] for i in range(len(d.terms))])
 
 if __name__=='__main__':
@@ -57,4 +58,4 @@ if __name__=='__main__':
         [midxMin(Midx([3,1,4,1,5,9,2]), Midx([2,7,1,8,2,8,1])).terms == [2,1,1,1,2,8,1], "midxMin"],
         [midxIsZero(Midx([0,0,0])) and not midxIsZero(Midx([0,1,0])), "midxIsZero"],
         [midxSub(Midx([3,1,4,1,5,9,2]), Midx([2,7,1,8,2,8,1])).terms == [1,-6,3,-7,3,1,1], "midxSub"]]
-    doTests(tests)
+    utils.doTests(tests)

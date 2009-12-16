@@ -13,7 +13,7 @@ class TreeNode:
         self.children = children
         self.data = data
     def traverse (self, func):
-        return func(self.data, [child.traverse(func) for child in children])
+        return func(self.data, [child.traverse(func) for child in self.children])
 
 def cmpLex (a, b):
     """

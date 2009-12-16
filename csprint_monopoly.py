@@ -3,7 +3,8 @@
 ## CSprint: Monome and polynome implementation 
 ## 
 ######################################################################
-from csprint_utils import *
+import csprint_utils
+utils = csprint_utils
 from csprint_midx_lb import Midx
 
 class Monome:
@@ -36,8 +37,8 @@ class Polynome:
                 s += " + "
             s += self.mons[i].tostr()
         return s
-    def toMonomes (poly):
-        return [elem for elem in poly.mons]
+    def toMonomes (self):
+        return [elem for elem in self.mons]
 
 if __name__=='__main__':
     raw = [
@@ -55,4 +56,4 @@ if __name__=='__main__':
          "3 <0>^2 + 2 <0>^4 <1> + 5 <1>^2 + 17 <1>^7 + 1 <1>^3 + 21 <0> <1>",
          "Polynome.tostr"],
         [poly.evaluate(vals) == 1329527, "Polynome.evaluate"]]
-    doTests(tests)
+    utils.doTests(tests)
