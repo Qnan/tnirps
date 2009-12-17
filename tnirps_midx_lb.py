@@ -3,8 +3,8 @@
 ## Tnirps: Tuple-based multiindex implementation
 ## 
 ######################################################################
-import csprint_utils
-utils = csprint_utils
+import tnirps_utils
+utils = tnirps_utils
 
 def make (iter):
     return tuple(iter)

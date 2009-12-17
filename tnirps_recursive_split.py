@@ -1,12 +1,12 @@
 ######################################################################
 ## 
-## CSprint: Simple recursive split procedure for tree building
+## Tnirps: Simple recursive split procedure for tree building
 ## 
 ######################################################################
-from csprint_utils import TreeNode
-from csprint_utils import doTests
-import csprint_midx_lb; Midx = csprint_midx_lb
-from csprint_monopoly import Monome
+from tnirps_utils import TreeNode
+from tnirps_utils import doTests
+import tnirps_midx_lb; Midx = tnirps_midx_lb
+from tnirps_monopoly import Monome
 
 def subList (mons, m):
     for monome in mons:

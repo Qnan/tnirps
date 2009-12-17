@@ -1,10 +1,10 @@
 ######################################################################
 ## 
-## CSprint: Monome and polynome implementation 
+## Tnirps: Monome and polynome implementation 
 ## 
 ######################################################################
-import csprint_utils; Utils = csprint_utils
-import csprint_midx_lb; Midx = csprint_midx_lb
+import tnirps_utils; Utils = tnirps_utils
+import tnirps_midx_lb; Midx = tnirps_midx_lb
 
 class Monome:
     """Monome is represented by a coefficient and a multiindex.
