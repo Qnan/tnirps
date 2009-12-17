@@ -1,61 +1,66 @@
 ######################################################################
 ## 
-## CSprint: List-based multiindex implementation
+## Tnirps: Tuple-based multiindex implementation
 ## 
 ######################################################################
 import csprint_utils
 utils = csprint_utils
 
-class Midx:
+def make (iter):
+    return tuple(iter)
+
+def zero ():
+    return ()
+
+def eval (midx, vals):
     """ Multiindex is represented by a list of integers.
-
+    
     """
-    def __init__ (self, terms=[]):
-        self.terms = terms
-    def evaluate (self, vals):
-        prod = 1
-        for i in range(len(vals)):
-            prod *= vals[i] ** self.terms[i]
-        return prod
-    def tostr (self):
-        s = ''
-        for i in range(len(self.terms)):
-            if (self.terms[i] != 0):
-                if s != '':
-                    s += ' '
-                s += '<%i>' % i
-                if (self.terms[i] != 1):
-                    s += '^' + str(self.terms[i])
-        return s
+    prod = 1
+    for i in range(len(vals)):
+        prod *= vals[i] ** midx[i]
+    return prod
 
-def midxMin (a, b):
+def tostr (midx):
+    """ Multiindex is represented by a list of integers.
+    
+    """
+    s = ''
+    for i in range(len(midx)):
+        if (midx[i] != 0):
+            if s != '':
+                s += ' '
+            s += '<%i>' % i
+            if (midx[i] != 1):
+                s += '^' + str(midx[i])
+    return s
+
+def min (a, b):
     if not hasattr(a,'terms') and hasattr(b,'terms'):
         raise TypeError("Arguments should be of type Midx!")
-    if len(a.terms) != len(b.terms):
+    if len(a) != len(b):
         raise ValueError("Multiindices should have the same length!")
-    return Midx([utils.min2(a.terms[i],b.terms[i]) for i in range(len(a.terms))])
-
-def midxIsZero (m):
-    if not hasattr(m,'terms'):
-        raise TypeError("Argument should be of type Midx!")
-    for a in m.terms:
+    return tuple((utils.min2(a[i],b[i]) for i in range(len(a))))
+    
+def isZero (m):
+    for a in m:
         if a != 0:
             return False
     return True
 
-def midxSub (m, d):
+def sub (m, d):
     if not hasattr(m,'terms') and hasattr(d,'terms'):
         raise TypeError("Arguments should be of type Midx!")
-    if len(m.terms) != len(d.terms):
+    if len(m) != len(d):
         raise ValueError("Multiindices should have the same length!")
-    return Midx([m.terms[i] - d.terms[i] for i in range(len(d.terms))])
+    return tuple((m[i] - d[i] for i in range(len(d))))
 
 if __name__=='__main__':
     tests = [
-        [len(Midx([2,4,8,16,32]).terms) == 5, "Midx.init"],
-        [Midx([1,5,0,77,3]).tostr() == "<0> <1>^5 <3>^77 <4>^3", "Midx.tostr"],
-        [Midx([3,1,4,1,0,9,2]).evaluate([2,7,1,8,2,8,1]) == 60129542144, "Midx.evaluate"],
-        [midxMin(Midx([3,1,4,1,5,9,2]), Midx([2,7,1,8,2,8,1])).terms == [2,1,1,1,2,8,1], "midxMin"],
-        [midxIsZero(Midx([0,0,0])) and not midxIsZero(Midx([0,1,0])), "midxIsZero"],
-        [midxSub(Midx([3,1,4,1,5,9,2]), Midx([2,7,1,8,2,8,1])).terms == [1,-6,3,-7,3,1,1], "midxSub"]]
+        [tostr((1,5,0,77,3)) == "<0> <1>^5 <3>^77 <4>^3", "tostr"],
+        [eval((3,1,4,1,0,9,2),(2,7,1,8,2,8,1)) == 60129542144, "eval"],
+        [min((3,1,4,1,5,9,2), (2,7,1,8,2,8,1)) == (2,1,1,1,2,8,1), "min"],
+        [isZero((0,0,0)) and not isZero((0,1,0)), "isZero"],
+        [sub((3,1,4,1,5,9,2), (2,7,1,8,2,8,1)) == (1,-6,3,-7,3,1,1), "sub"]
+        ]
     utils.doTests(tests)

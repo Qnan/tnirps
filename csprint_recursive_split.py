@@ -10,7 +10,7 @@ from csprint_monopoly import Monome
 
 def subList (mons, m):
     for monome in mons:
-        monome.midx = Midx.midxSub(monome.midx, m)
+        monome.midx = Midx.sub(monome.midx, m)
     return mons
     
 
@@ -22,8 +22,8 @@ def split (mons):
     """
     mcm=mons[0].midx
     for i in range(len(mons)):
-        m = Midx.midxMin(mcm, mons[i].midx)
-        if Midx.midxIsZero(m):
+        m = Midx.min(mcm, mons[i].midx)
+        if Midx.isZero(m):
             return mcm, subList(mons[:i], mcm), mons[i:]
         mcm = m
     return mcm, subList(mons[:i], mcm), []
@@ -52,8 +52,8 @@ def printTree (tree, offset = 0):
     [printTree(child, offset + 1) for child in tree.children]
 
 if __name__=='__main__':
-    lst = [[1, [2,3]], [2, [2,1]], [3, [1,0]], [5, [0,3]], [7, [0,2]]]
-    mons = [Monome(el[0], Midx.Midx(el[1])) for el in lst]
+    lst = ((1, (2,3)), (2, (2,1)), (3, (1,0)), (5, (0,3)), (7, (0,2)))
+    mons = [Monome(el[0], el[1]) for el in lst]
     r = split(mons)
     tests = [
         [split(mons), "TreeNode init"]
