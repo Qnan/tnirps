@@ -6,6 +6,8 @@
 import tnirps_utils
 utils = tnirps_utils
 
+varnames = ('x', 'y', 'z', 'v', 'w', 's', 't', 'r', 'p', 'q', 'h')
+
 def make (iter):
     return tuple(iter)
 
@@ -30,7 +32,10 @@ def tostr (midx):
         if (midx[i] != 0):
             if s != '':
                 s += ' '
-            s += '<%i>' % i
+            if varnames != None:
+                s += varnames[i]
+            else:
+                s += '<%i>' % i
             if (midx[i] != 1):
                 s += '^' + str(midx[i])
     return s

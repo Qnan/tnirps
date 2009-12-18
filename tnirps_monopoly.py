@@ -15,8 +15,13 @@ class Monome:
         self.midx = Midx.make(midx)
     def evaluate (self, vals):
         return self.coeff * Midx.eval(self.midx, vals)
-    def tostr (self):
-        return '{0} {1}'.format(self.coeff, Midx.tostr(self.midx))
+    def tostr (self, inExpr=False):
+        if inExpr:
+            return ' {0} {1} {2}'.format(self.coeff < 0 and '-' or '+', abs(self.coeff), Midx.tostr(self.midx))
+        else:
+            return '{0} {1}'.format(self.coeff, Midx.tostr(self.midx))
+    def __repr__ (self):
+        return self.tostr()    
 
 class Polynome:
     """Polynome is defined as a list of monomes.
@@ -32,12 +37,14 @@ class Polynome:
     def tostr (self):
         s = ""
         for i in range(len(self.mons)):
-            if (s != ""):
-                s += " + "
-            s += self.mons[i].tostr()
+            s += self.mons[i].tostr(s != "")
         return s
+    def __repr__ (self):
+        return self.tostr()    
     def toMonomes (self):
         return [elem for elem in self.mons]
+
+print(Polynome(((1, (2,0)), (-2, (1,1)), (1, (0,2)))))
 
 if __name__=='__main__':
     raw = (
