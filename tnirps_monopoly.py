@@ -16,10 +16,15 @@ class Monome:
     def evaluate (self, vals):
         return self.coeff * Midx.eval(self.midx, vals)
     def tostr (self, inExpr=False):
+        c = self.coeff
+        s = ''
         if inExpr:
-            return ' {0} {1} {2}'.format(self.coeff < 0 and '-' or '+', abs(self.coeff), Midx.tostr(self.midx))
-        else:
-            return '{0} {1}'.format(self.coeff, Midx.tostr(self.midx))
+            s += ' ' + (c < 0 and '-' or '+') + ' '
+            c = abs(c)
+        if c != 1:
+            s += str(c) + ' '
+        s += Midx.tostr(self.midx)
+        return s        
     def __repr__ (self):
         return self.tostr()    
 
@@ -44,14 +49,12 @@ class Polynome:
     def toMonomes (self):
         return [elem for elem in self.mons]
 
-print(Polynome(((1, (2,0)), (-2, (1,1)), (1, (0,2)))))
-
 if __name__=='__main__':
     raw = (
         (3,(2,0)),
         (2,(4,1)),
         (5,(0,2)),
-        (17,(0,7)),
+        (-17,(0,7)),
         (1,(0,3)),
         (21,(1,1)))
     vals = (3,5)
@@ -59,7 +62,7 @@ if __name__=='__main__':
     monomes = poly.toMonomes()
     tests = [
         [poly.tostr() ==
-         "3 <0>^2 + 2 <0>^4 <1> + 5 <1>^2 + 17 <1>^7 + 1 <1>^3 + 21 <0> <1>",
+         "3 x^2 + 2 x^4 y + 5 y^2 - 17 y^7 + y^3 + 21 x y",
          "Polynome.tostr"],
-        [poly.evaluate(vals) == 1329527, "Polynome.evaluate"]]
+        [poly.evaluate(vals) == -1326723, "Polynome.evaluate"]]
     Utils.doTests(tests)
