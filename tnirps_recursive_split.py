@@ -9,11 +9,8 @@ import tnirps_midx_lb; Midx = tnirps_midx_lb
 from tnirps_monopoly import Monome
 
 def subList (mons, m):
-    for monome in mons:
-        monome.midx = Midx.sub(monome.midx, m)
-    return mons
+    return [Monome(mon.coeff, Midx.sub(mon.midx, m)) for mon in mons]
     
-
 def split (mons):
     """Find the maximum prefix of the sequence having nontrivial common divisor
         and return this divisor along with the first part of the list divided by it
@@ -34,13 +31,13 @@ def monomesToTree (monomes):
     
     """
     if len(monomes) == 1:
-        return TreeNode(monomes[0])
+        return TreeNode(monomes[0].clone())
     else:
         mcm, ml1, ml2 = split(monomes)
         if len(ml1) > 1:
-            lnode = TreeNode('*', [TreeNode(mcm), monomesToTree(ml1)])
+            lnode = TreeNode('*', [TreeNode(Monome(1, mcm)), monomesToTree(ml1)])
         else:
-            lnode = TreeNode(mcm)
+            lnode = TreeNode(Monome(ml1[0].coeff, mcm))
         if len(ml2) > 0:
             rnode = monomesToTree(ml2)
             return TreeNode('+', [lnode, rnode])

@@ -15,6 +15,8 @@ class Monome:
         self.midx = Midx.make(midx)
     def evaluate (self, vals):
         return self.coeff * Midx.eval(self.midx, vals)
+    def clone (self):
+        return Monome(self.coeff, self.midx)
     def tostr (self, inExpr=False):
         c = self.coeff
         s = ''
@@ -50,7 +52,7 @@ class Polynome:
     def __repr__ (self):
         return self.tostr()    
     def toMonomes (self):
-        return [elem for elem in self.mons]
+        return [elem.clone() for elem in self.mons]
 
 if __name__=='__main__':
     raw = (

@@ -15,6 +15,25 @@ class TreeNode:
     def traverse (self, func):
         return func(self.data, [child.traverse(func) for child in self.children])
 
+def cmpToKey(mycmp):
+    'Convert a cmp= function into a key= function'
+    class K(object):
+        def __init__(self, obj, *args):
+            self.obj = obj
+        def __lt__(self, other):
+            return mycmp(self.obj, other.obj) == -1
+        def __gt__(self, other):
+            return mycmp(self.obj, other.obj) == 1
+        def __eq__(self, other):
+            return mycmp(self.obj, other.obj) == 0
+        def __le__(self, other):
+            return mycmp(self.obj, other.obj) != 1  
+        def __ge__(self, other):
+            return mycmp(self.obj, other.obj) != -1
+        def __ne__(self, other):
+            return mycmp(self.obj, other.obj) != 0
+    return K
+
 def cmpLex (a, b):
     """
     Compare lists lexicographically. The lists must be of the same length!
@@ -27,6 +46,8 @@ def cmpLex (a, b):
         elif a[i] < b[i]:
             return -1
     return 0
+
+keyLex = cmpToKey(cmpLex)
 
 def min2 (a,b):
     """
