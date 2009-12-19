@@ -40,6 +40,12 @@ def max2 (a,b):
     """
     return (a > b and (a,) or (b,))[0]
 
+def ifelse (c, t, e):
+    if c:
+        return t
+    else:
+        return e
+
 def doTests (tests):
     testcnt = 0
     for test in tests:

@@ -26,7 +26,7 @@ def split (mons):
         if Midx.isZero(m):
             return mcm, subList(mons[:i], mcm), mons[i:]
         mcm = m
-    return mcm, subList(mons[:i], mcm), []
+    return mcm, subList(mons, mcm), []
 
 def monomesToTree (monomes):
     """Create a tree by recursively splitting the list of monomes.
@@ -55,6 +55,7 @@ if __name__=='__main__':
     lst = ((1, (2,3)), (2, (2,1)), (3, (1,0)), (5, (0,3)), (7, (0,2)))
     mons = [Monome(el[0], el[1]) for el in lst]
     r = split(mons)
+    print(str(r))
     tests = [
         [split(mons), "TreeNode init"]
         ]

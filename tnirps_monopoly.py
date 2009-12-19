@@ -21,8 +21,11 @@ class Monome:
         if inExpr:
             s += ' ' + (c < 0 and '-' or '+') + ' '
             c = abs(c)
-        if c != 1:
-            s += str(c) + ' '
+        isZero = Midx.isZero(self.midx)
+        if c != 1 or isZero:
+            s += str(c)
+            if not isZero:
+                s += ' '
         s += Midx.tostr(self.midx)
         return s        
     def __repr__ (self):

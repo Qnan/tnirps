@@ -15,30 +15,20 @@ def zero ():
     return ()
 
 def eval (midx, vals):
-    """ Multiindex is represented by a list of integers.
-    
-    """
     prod = 1
     for i in range(len(vals)):
         prod *= vals[i] ** midx[i]
     return prod
 
+def varToStr (i):
+    if varnames != None:
+        return varnames[i]
+    else:
+        return '<{0}>'.format(i)
+
 def tostr (midx):
-    """ Multiindex is represented by a list of integers.
-    
-    """
-    s = ''
-    for i in range(len(midx)):
-        if (midx[i] != 0):
-            if s != '':
-                s += ' '
-            if varnames != None:
-                s += varnames[i]
-            else:
-                s += '<%i>' % i
-            if (midx[i] != 1):
-                s += '^' + str(midx[i])
-    return s
+    return ' '.join([varToStr(i) + utils.ifelse(midx[i] != 1, '^{0}'.format(midx[i]), '') 
+                     for i in range(len(midx)) if midx[i] != 0])
 
 def min (a, b):
     if not hasattr(a,'terms') and hasattr(b,'terms'):
@@ -62,7 +52,7 @@ def sub (m, d):
 
 if __name__=='__main__':
     tests = [
-        [tostr((1,5,0,77,3)) == "<0> <1>^5 <3>^77 <4>^3", "tostr"],
+        [tostr((1,5,0,77,3)) == "x y^5 v^77 w^3", "tostr"],
         [eval((3,1,4,1,0,9,2),(2,7,1,8,2,8,1)) == 60129542144, "eval"],
         [min((3,1,4,1,5,9,2), (2,7,1,8,2,8,1)) == (2,1,1,1,2,8,1), "min"],
         [isZero((0,0,0)) and not isZero((0,1,0)), "isZero"],
