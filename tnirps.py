@@ -5,10 +5,9 @@ import tnirps_midx_lb; Midx = tnirps_midx_lb
 from tnirps_monopoly import Polynome
 from tnirps_monopoly import Monome
 import math
-import random
 import samples_poly
 
-poly = Polynome(samples_poly.lng1)
+poly = Polynome(samples_poly.dns1)
 print(poly)
 
 mc = 0

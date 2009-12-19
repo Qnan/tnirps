@@ -1,3 +1,9 @@
+import math
+import random
+
+import tnirps_utils; Utils = tnirps_utils
+
+
 def unique (list, func):
     ul = []
     lookup = []
@@ -13,7 +19,9 @@ def unique (list, func):
 #3, 0.05, 0.5, 0.001
 def makeRandPoly(v, lengthFactor, presenceFactor, degreeFactor):
     n = math.ceil(random.expovariate(lengthFactor))
-    data = [(1, [Utils.ifelse(random.random() < presenceFactor, math.ceil(random.expovariate(degreeFactor)), 0) for j in range(v)]) for i in range(n)]
+    data = [(1, [Utils.ifelse(random.random() < presenceFactor, \
+                              math.ceil(random.expovariate(degreeFactor)), 0) \
+                              for j in range(v)]) for i in range(n)]
     return unique(data, lambda el: el[1])    
 
-print(str(',\n'.join([str(el) for el in makeRandPoly(3, 0.01, 0.7, 0.001)])))
+print(str(',\n'.join([str(el) for el in makeRandPoly(3, 0.01, 0.7, 0.05)])))
