@@ -31,8 +31,6 @@ def tostr (midx):
                      for i in range(len(midx)) if midx[i] != 0])
 
 def min (a, b):
-    if not hasattr(a,'terms') and hasattr(b,'terms'):
-        raise TypeError("Arguments should be of type Midx!")
     if len(a) != len(b):
         raise ValueError("Multiindices should have the same length!")
     return tuple((utils.min2(a[i],b[i]) for i in range(len(a))))
@@ -43,9 +41,28 @@ def isZero (m):
             return False
     return True
 
+def cmp (a, b):
+    """ Check whether b divides a or vice versa.
+    
+    Returns
+         1 if a >= b
+        -1 if b > a
+         0 otherwise
+    """
+    if len(a) != len(b):
+        raise ValueError("Multiindices should have the same length!")
+    mn, mx = 0, 0
+    for i in range(len(a)):
+        v = a[i] - b[i]
+        if mn > v: mn = v
+        if mx < v: mx = v
+    if mn == 0:
+        return 1
+    if mx == 0:
+        return -1
+    return 0
+
 def sub (m, d):
-    if not hasattr(m,'terms') and hasattr(d,'terms'):
-        raise TypeError("Arguments should be of type Midx!")
     if len(m) != len(d):
         raise ValueError("Multiindices should have the same length!")
     return tuple((m[i] - d[i] for i in range(len(d))))
@@ -56,6 +73,10 @@ if __name__=='__main__':
         [eval((3,1,4,1,0,9,2),(2,7,1,8,2,8,1)) == 60129542144, "eval"],
         [min((3,1,4,1,5,9,2), (2,7,1,8,2,8,1)) == (2,1,1,1,2,8,1), "min"],
         [isZero((0,0,0)) and not isZero((0,1,0)), "isZero"],
-        [sub((3,1,4,1,5,9,2), (2,7,1,8,2,8,1)) == (1,-6,3,-7,3,1,1), "sub"]
+        [sub((3,1,4,1,5,9,2), (2,7,1,8,2,8,1)) == (1,-6,3,-7,3,1,1), "sub"],
+        [cmp((1,2,3), (1,3,4)) == -1, "cmp 1"],
+        [cmp((1,2,3), (1,1,2)) ==  1, "cmp 2"],
+        [cmp((1,2,3), (1,2,3)) ==  1, "cmp 3"],
+        [cmp((1,2,3), (2,1,3)) ==  0, "cmp 1"],
         ]
     utils.doTests(tests)

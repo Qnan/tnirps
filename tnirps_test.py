@@ -1,4 +1,3 @@
-from tnirps_utils import cmpLex
 import tnirps_recursive_split
 import tnirps_utils; Utils = tnirps_utils
 import tnirps_midx_lb; Midx = tnirps_midx_lb
@@ -18,7 +17,7 @@ for monome in poly.mons:
 print('naive: {0}'.format(mc))
 
 def monCmp (a,b):
-    return cmpLex(a.midx, b.midx)
+    return Utils.cmpLex(a.midx, b.midx)
 monomes = poly.toMonomes()
 monomes.sort(key=Utils.cmpToKey(monCmp),reverse=True)
 print(monomes)
